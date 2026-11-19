@@ -1,0 +1,40 @@
+# Python Virtual Environments
+.venv*
+venv*
+ENV/
+env/
+
+# Data Files & Caches
+*.csv
+*.parquet
+*.db
+*.sqlite
+*.sqlite3
+
+# DVC Runtime Files
+.dvc/cache/
+.dvc/tmp/
+dvc.lock
+*.dvc
+
+# MLflow Tracking & Artifacts
+mlruns/
+mlartifacts/
+*.log
+
+# Generated Evaluation Artifacts
+confusion_matrix_*.png
+models/*.joblib
+metrics/*.json
+
+# Dynamic Feast Files
+feature_repo/data/*.parquet
+feature_repo/data/*.db
+feature_repo/features.py
+
+# Python Cache & IDEs
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+.idea/

@@ -1,0 +1,22 @@
+stages:
+  stage1_prepare_data:
+    cmd: python src/stage1_prepare_data.py --output data/processed/validated_features.parquet
+    deps:
+      - src/stage1_prepare_data.py
+      - dataset_loader.py
+    outs:
+      - data/processed/validated_features.parquet
+
+  stage2_feast_pipeline:
+    cmd: python feature_repo/stage2_feast_pipeline.py
+    deps:
+      - feature_repo/stage2_feast_pipeline.py
+      - data/processed/validated_features.parquet
+    outs:
+      - data/processed/feast_training_set.parquet
+
+  stage3_train_register_infer:
+    cmd: python src/stage3_train_register_infer.py
+    deps:
+      - src/stage3_train_register_infer.py
+      - data/processed/feast_training_set.parquet

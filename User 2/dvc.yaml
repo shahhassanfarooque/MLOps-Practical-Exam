@@ -1,0 +1,41 @@
+stages:
+  collect:
+    cmd: python src/pipeline/collect.py --output data/raw/raw_data.csv
+    deps:
+      - src/pipeline/collect.py
+      - dataset_loader.py
+    outs:
+      - data/raw/raw_data.csv
+
+  preprocess:
+    cmd: python src/pipeline/preprocess.py --input data/raw/raw_data.csv --output data/processed/preprocessed_data.csv
+    deps:
+      - src/pipeline/preprocess.py
+      - data/raw/raw_data.csv
+    outs:
+      - data/processed/preprocessed_data.csv
+
+  features:
+    cmd: python src/pipeline/features.py --input data/processed/preprocessed_data.csv --output data/processed/featured_data.csv
+    deps:
+      - src/pipeline/features.py
+      - data/processed/preprocessed_data.csv
+    outs:
+      - data/processed/featured_data.csv
+
+  validate:
+    cmd: python src/pipeline/validate.py --input data/processed/featured_data.csv
+    deps:
+      - src/pipeline/validate.py
+      - data/processed/featured_data.csv
+
+  train_eval:
+    cmd: python src/pipeline/train_eval.py --input data/processed/featured_data.csv --model-out models/pipeline_model.joblib --metrics-out metrics/eval_metrics.json
+    deps:
+      - src/pipeline/train_eval.py
+      - data/processed/featured_data.csv
+    outs:
+      - models/pipeline_model.joblib
+    metrics:
+      - metrics/eval_metrics.json:
+          cache: false
